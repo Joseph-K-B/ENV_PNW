@@ -14,8 +14,10 @@ at_df["Month"] = at_df["Month"].astype(int)
 jan_wt_df = wt_df.loc[wt_df["Month"] == 1]
 jan_at_df = at_df.loc[at_df["Month"] == 1]
 
-# Merge the two dataframes
+# Merge water and air temp data
+df = pd.merge(at_df, wt_df, on=["Year", "Month"], how="outer").set_index("Year").dropna()
 jan_df = pd.merge(jan_wt_df, jan_at_df, on="Year", how="outer").set_index("Year").dropna().drop("Month_x", 1).rename(columns={"Month_y": "Month"})
 
 # Save the data
 jan_df.to_csv("./data/january_temp.csv")
+df.to_csv("./data/oregon_temp.csv")
